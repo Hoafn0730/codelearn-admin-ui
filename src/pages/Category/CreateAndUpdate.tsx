@@ -4,8 +4,6 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { CategoryType } from './Category';
 import MdEditor from '~/components/MdEditor';
 
-// import MdEditor from '~/components/MdEditor';
-
 type CreateAndUpdateProps = {
     dataRaw: CategoryType | undefined;
     isShow: boolean;

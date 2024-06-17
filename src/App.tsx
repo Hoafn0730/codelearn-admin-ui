@@ -2,16 +2,16 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Fragment, useEffect, useId } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import io from 'socket.io-client';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { DefaultLayout } from '~/layouts';
-import { publicRoutes } from '~/routes';
+import { privateRoutes } from '~/routes';
 import PrivateRoute from './components/PrivateRoute';
 import config from './config';
 import Login from './pages/Login';
 import { getCurrentUser } from './redux/actions/accountAction';
 import { addNewNotification } from './redux/actions/notificationAction';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const socket = io('http://localhost:5000');
 
@@ -21,7 +21,7 @@ function App() {
     const id = useId();
 
     useEffect(() => {
-        if (!currentUser?.userInfo?.accessToken) {
+        if (!currentUser?.userInfo?.accessToken && !currentUser?.isLogin) {
             dispatch(getCurrentUser());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +59,7 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
-                    {publicRoutes.map((route, index) => {
+                    {privateRoutes.map((route, index) => {
                         const Page = route.component;
                         let Layout = DefaultLayout;
 

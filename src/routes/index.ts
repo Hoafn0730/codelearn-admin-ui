@@ -19,7 +19,7 @@ type RouteType = {
     }[];
 };
 
-const publicRoutes: RouteType[] = [
+const privateRoutes: RouteType[] = [
     { path: config.routes.dashboard, component: Dashboard },
     { path: config.routes.user, component: User },
     { path: config.routes.category, component: Category },
@@ -30,4 +30,4 @@ const publicRoutes: RouteType[] = [
     { path: config.routes.receipt, component: Receipt, layout: null },
 ];
 
-export { publicRoutes };
+export { privateRoutes };

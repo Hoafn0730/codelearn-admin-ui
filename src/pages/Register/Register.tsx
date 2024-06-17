@@ -142,13 +142,13 @@ function Register() {
                                                             <td>{moment(item?.registeredAt).format('MM-DD-YYYY')}</td>
                                                             <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                             <td>
-                                                                <Button
+                                                                {/* <Button
                                                                     variant="warning"
                                                                     className="text-light mx-1"
                                                                     onClick={() => handleEdit(item)}
                                                                 >
                                                                     Edit
-                                                                </Button>
+                                                                </Button> */}
                                                                 <Button
                                                                     variant="danger"
                                                                     onClick={() => handleDelete(item.id)}

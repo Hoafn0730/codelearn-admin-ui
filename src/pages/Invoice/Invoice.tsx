@@ -134,10 +134,10 @@ function Invoice() {
             render: (record: any) => {
                 return (
                     <>
-                        <Button variant="warning" className="text-light mx-1" onClick={() => handleEdit(record)}>
+                        <Button variant="warning" className="text-light" onClick={() => handleEdit(record)}>
                             Edit
                         </Button>
-                        <Button variant="danger" onClick={() => handleDelete(record.id)}>
+                        <Button variant="danger" className="mx-1" onClick={() => handleDelete(record.id)}>
                             Xoa
                         </Button>
                         <Button variant="info" className="text-light" onClick={() => navigate('/receipt/' + record.id)}>

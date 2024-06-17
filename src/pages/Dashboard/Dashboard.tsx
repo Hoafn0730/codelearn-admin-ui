@@ -4,10 +4,23 @@ import { Card, Col, Row } from 'react-bootstrap';
 import styles from './Dashboard.module.scss';
 import images from '~/assets/images';
 import Image from '~/components/Image';
+import { useEffect, useState } from 'react';
+import { analysis } from '~/services/analyticService';
+import formatPrice from '~/utils/formatPrice';
 
 const cx = classNames.bind(styles);
 
 function Dashboard() {
+    const [data, setData] = useState<any>();
+    const [featuredCourses, setFeaturedCourses] = useState<any[]>([]);
+
+    useEffect(() => {
+        analysis().then((res) => {
+            setData(res);
+            setFeaturedCourses(res.featuredCourses);
+        });
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
             <Row>
@@ -17,7 +30,7 @@ function Dashboard() {
                             <h3 className={cx('font-weight-bold', 'title')}>Welcome Hoafn0730</h3>
                             <h6 className={cx('font-weight-normal', 'mb-0', 'subtitle')}>
                                 All systems are running smoothly! You have
-                                <span className={cx('text-primary')}>3 unread alerts!</span>
+                                <span className={cx('text-primary')}> 3 unread alerts!</span>
                             </h6>
                         </Col>
                         <Col xs={12} xl={4}>
@@ -82,8 +95,8 @@ function Dashboard() {
                         <Col md={6} className={cx('mb-4', 'stretch-card', 'transparent')}>
                             <Card className={cx('card-tale')}>
                                 <Card.Body className={cx('py-5', 'px-4')}>
-                                    <p className="mb-4">Today’s Bookings</p>
-                                    <p className="fs-30 mb-2">4006</p>
+                                    <p className="mb-4">Số học viên</p>
+                                    <p className="fs-30 mb-2">{data?.numberUser} học viên</p>
                                     <p>10.00% (30 days)</p>
                                 </Card.Body>
                             </Card>
@@ -91,8 +104,8 @@ function Dashboard() {
                         <Col md={6} className={cx('mb-4', 'stretch-card', 'transparent')}>
                             <Card className={cx('card-dark-blue')}>
                                 <Card.Body className={cx('py-5', 'px-4')}>
-                                    <p className="mb-4">Total Bookings</p>
-                                    <p className="fs-30 mb-2">61344</p>
+                                    <p className="mb-4">Số khóa học được đăng ký</p>
+                                    <p className="fs-30 mb-2">{data?.numberCourseRegistered}</p>
                                     <p>22.00% (30 days)</p>
                                 </Card.Body>
                             </Card>
@@ -102,13 +115,13 @@ function Dashboard() {
                         <Col md={6} className={cx('mb-4', 'mb-lg-0', 'stretch-card', 'transparent')}>
                             <Card className={cx('card-light-blue')}>
                                 <Card.Body className={cx('py-5', 'px-4')}>
-                                    <p className="mb-4">Number of Meetings</p>
-                                    <p className="fs-30 mb-2">34040</p>
+                                    <p className="mb-4">Doanh thu trong tháng {new Date().getMonth() + 1}</p>
+                                    <p className="fs-30 mb-2">{formatPrice(data?.revenue)}</p>
                                     <p>2.00% (30 days)</p>
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col md={6} className={cx('stretch-card', 'transparent')}>
+                        {/* <Col md={6} className={cx('stretch-card', 'transparent')}>
                             <Card className={cx('card-light-danger')}>
                                 <Card.Body className={cx('py-5', 'px-4')}>
                                     <p className="mb-4">Number of Clients</p>
@@ -116,7 +129,7 @@ function Dashboard() {
                                     <p>0.22% (30 days)</p>
                                 </Card.Body>
                             </Card>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Col>
             </Row>
@@ -155,17 +168,28 @@ function Dashboard() {
                     <Card>
                         <Card.Body>
                             <div className="d-flex justify-content-between">
-                                <Card.Title>Sales Report</Card.Title>
-                                <a href="#" className="text-info">
-                                    View all
-                                </a>
+                                <Card.Title>Khoá học phổ biến</Card.Title>
                             </div>
-                            <p className="font-weight-500">
-                                The total number of sessions within the date range. It is the period time a user is
-                                actively engaged with your website, page or app, etc
-                            </p>
-                            <div id="sales-legend" className="chartjs-legend mt-4 mb-2" />
-                            <canvas id="sales-chart" />
+                            <ul>
+                                {featuredCourses.map((course: any) => (
+                                    <li>
+                                        <img
+                                            style={{
+                                                width: '100px',
+                                                marginRight: 10,
+                                                marginBottom: 6,
+                                                borderRadius: 10,
+                                            }}
+                                            src={course.image}
+                                            alt={course.title}
+                                        />
+                                        <span>{course.title}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {/* <div id="sales-legend" className="chartjs-legend mt-4 mb-2" />
+                            <canvas id="sales-chart" /> */}
                         </Card.Body>
                     </Card>
                 </Col>
