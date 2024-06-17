@@ -1,15 +1,17 @@
 import classnames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
 
 import styles from './Invoice.module.scss';
 import CreateAndUpdate from './CreateAndUpdate';
 import Delete from './Delete';
 import Pagination from '~/components/Pagination';
 import invoiceService from '~/services/invoiceService';
+import formatPrice from '~/utils/formatPrice';
 import Table from '~/components/Table';
 
 const cx = classnames.bind(styles);
@@ -24,7 +26,7 @@ export type InvoiceType = {
     userId: number;
     courseId: number;
     total?: number;
-    status?: null;
+    status?: string;
 };
 
 function Invoice() {
@@ -34,29 +36,7 @@ function Invoice() {
     const [isShowDelete, setIsShowDelete] = useState(false);
     const [searchParams] = useSearchParams();
     const [id, setId] = useState<number>(0);
-
-    const columns = [
-        {
-            title: 'Course',
-            key: { model: 'course', field: 'title' },
-        },
-        {
-            title: 'User',
-            key: { model: 'user', field: 'username' },
-        },
-        {
-            title: 'Total',
-            key: 'total',
-        },
-        {
-            title: 'Status',
-            key: 'status',
-        },
-        {
-            title: 'Created at',
-            key: 'createdAt',
-        },
-    ];
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (Number(searchParams.get('page')) > 0 && !(show || isShowDelete)) {
@@ -121,6 +101,54 @@ function Invoice() {
         setIsShowDelete(false);
     };
 
+    const columns = [
+        {
+            title: 'Course',
+            key: { model: 'course', field: 'title' },
+        },
+        {
+            title: 'User',
+            key: { model: 'user', field: 'username' },
+        },
+        {
+            title: 'Total',
+            key: 'total',
+            render: (record: any) => {
+                return formatPrice(record?.total);
+            },
+        },
+        {
+            title: 'Status',
+            key: 'status',
+        },
+        {
+            title: 'Created at',
+            key: 'createdAt',
+            render: (record: any) => {
+                return moment(record?.createdAt).format('MM-DD-YYYY');
+            },
+        },
+        {
+            title: 'Actions',
+            key: 'actions',
+            render: (record: any) => {
+                return (
+                    <>
+                        <Button variant="warning" className="text-light mx-1" onClick={() => handleEdit(record)}>
+                            Edit
+                        </Button>
+                        <Button variant="danger" onClick={() => handleDelete(record.id)}>
+                            Xoa
+                        </Button>
+                        <Button variant="info" className="text-light" onClick={() => navigate('/receipt/' + record.id)}>
+                            Hoa don
+                        </Button>
+                    </>
+                );
+            },
+        },
+    ];
+
     return (
         <div className={cx('wrapper')}>
             <Container>
@@ -145,54 +173,7 @@ function Invoice() {
                                 </Card.Header>
                                 <Row>
                                     <Col xs={12}>
-                                        <Table
-                                            columns={columns}
-                                            dataSource={data?.data}
-                                            onEdit={handleEdit}
-                                            onDelete={handleDelete}
-                                        />
-                                        {/* <Table hover responsive>
-                                            <thead>
-                                                <tr>
-                                                    <th>Quote#</th>
-                                                    <th>Course</th>
-                                                    <th>User</th>
-                                                    <th>Total</th>
-                                                    <th>Status</th>
-                                                    <th>Created at</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {data?.data.map((item, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{index + 1}</td>
-                                                            <td>{item?.course?.title}</td>
-                                                            <td>{item?.user?.username}</td>
-                                                            <td>{item.total}</td>
-                                                            <td>{item.status}</td>
-                                                            <td>{item.createdAt}</td>
-                                                            <td>
-                                                                <Button
-                                                                    variant="warning"
-                                                                    className="text-light mx-1"
-                                                                    onClick={() => handleEdit(item)}
-                                                                >
-                                                                    Edit
-                                                                </Button>
-                                                                <Button
-                                                                    variant="danger"
-                                                                    onClick={() => handleDelete(item.id)}
-                                                                >
-                                                                    Xoa
-                                                                </Button>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </tbody>
-                                        </Table> */}
+                                        <Table columns={columns} dataSource={data?.data} />
                                     </Col>
                                 </Row>
                                 <Row>

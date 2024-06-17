@@ -8,6 +8,10 @@ const getInvoices = async ({ page }: { page?: number }) => {
     });
 };
 
+const getInvoiceById = async ({ id }: { id?: number }) => {
+    return await httpRequest.get('/invoices/' + id);
+};
+
 const createInvoice = async (data: any) => {
     return await httpRequest.post('/invoices', data);
 };
@@ -22,6 +26,7 @@ const deleteInvoice = async (id: number) => {
 
 const invoiceService = {
     getInvoices,
+    getInvoiceById,
     createInvoice,
     updateInvoice,
     deleteInvoice,

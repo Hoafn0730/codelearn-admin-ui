@@ -7,8 +7,8 @@ import rootReducer from './reducers/rootReducer';
 import { injectStore } from '~/utils/httpRequest';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
-export const persistor = persistStore(store);
-
 injectStore(store);
+
+export const persistor = persistStore(store);
 
 export default store;

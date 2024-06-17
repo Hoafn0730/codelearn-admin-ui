@@ -6,16 +6,14 @@ import counterReducer from '../reducers/counterReducer';
 import accountReducer from '../reducers/accountReducer';
 import notificationReducer from '../reducers/notificationReducer';
 
-const persistConfig = {
+const authPersistConfig = {
     key: 'auth',
     storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, accountReducer);
-
 const rootReducer = combineReducers({
     counter: counterReducer,
-    account: persistedReducer,
+    account: persistReducer(authPersistConfig, accountReducer),
     notification: notificationReducer,
 });
 

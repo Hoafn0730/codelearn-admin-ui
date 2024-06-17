@@ -10,6 +10,7 @@ import CreateAndUpdate from './CreateAndUpdate';
 import Delete from './Delete';
 import Pagination from '~/components/Pagination';
 import userService from '~/services/userService';
+import moment from 'moment';
 
 const cx = classnames.bind(styles);
 
@@ -142,7 +143,7 @@ function User() {
                                                         <td>{item.email}</td>
                                                         <td>{item.fullName}</td>
                                                         <td>{item.role}</td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                         <td>
                                                             <Button
                                                                 variant="warning"

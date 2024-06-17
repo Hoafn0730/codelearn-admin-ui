@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Tippy from '@tippyjs/react';
 
 import styles from './Header.module.scss';
 import Search from '../Search';
@@ -10,9 +12,7 @@ import Menu from './Menu';
 import { MenuItem } from './Menu/MenuItem';
 import Avatar from '~/components/Avatar';
 import { InboxIcon, LanguageIcon } from '~/components/Icons';
-import { useSelector } from 'react-redux';
 import Inbox from './Inbox';
-import Tippy from '@tippyjs/react';
 
 const cx = classnames.bind(styles);
 

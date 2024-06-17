@@ -9,7 +9,7 @@ function Footer() {
         <footer className={cx('wrapper')}>
             <div className="d-sm-flex justify-content-center">
                 <span className="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                    Copyright © 2024. Premium
+                    Copyright © 2024. CodeLearn
                 </span>
             </div>
         </footer>

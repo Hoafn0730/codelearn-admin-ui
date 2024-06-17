@@ -9,6 +9,7 @@ import Delete from './Delete';
 import Pagination from '~/components/Pagination';
 import Image from '~/components/Image';
 import categoryService from '~/services/categoryService';
+import moment from 'moment';
 
 const cx = classnames.bind(styles);
 
@@ -138,7 +139,7 @@ function Category() {
                                                                 alt={item.title}
                                                             />
                                                         </td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                         <td>
                                                             <Button
                                                                 variant="warning"

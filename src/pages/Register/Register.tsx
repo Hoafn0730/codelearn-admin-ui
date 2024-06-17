@@ -10,6 +10,7 @@ import CreateAndUpdate from './CreateAndUpdate';
 import Delete from './Delete';
 import Pagination from '~/components/Pagination';
 import registerService from '~/services/registerService';
+import moment from 'moment';
 
 const cx = classnames.bind(styles);
 
@@ -138,8 +139,8 @@ function Register() {
                                                             <td>{index + 1}</td>
                                                             <td>{item?.course?.title}</td>
                                                             <td>{item?.user?.username}</td>
-                                                            <td>{item.registeredAt}</td>
-                                                            <td>{item.createdAt}</td>
+                                                            <td>{moment(item?.registeredAt).format('MM-DD-YYYY')}</td>
+                                                            <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                             <td>
                                                                 <Button
                                                                     variant="warning"

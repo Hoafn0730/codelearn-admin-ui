@@ -7,6 +7,7 @@ import Course from '~/pages/Course';
 import Lesson from '~/pages/Lesson';
 import Register from '~/pages/Register';
 import Invoice from '~/pages/Invoice';
+import Receipt from '~/pages/Receipt';
 
 type RouteType = {
     path: string;
@@ -26,6 +27,7 @@ const publicRoutes: RouteType[] = [
     { path: config.routes.lesson, component: Lesson },
     { path: config.routes.register, component: Register },
     { path: config.routes.invoice, component: Invoice },
+    { path: config.routes.receipt, component: Receipt, layout: null },
 ];
 
 export { publicRoutes };

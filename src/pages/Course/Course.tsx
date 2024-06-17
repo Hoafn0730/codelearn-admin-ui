@@ -11,6 +11,8 @@ import Delete from './Delete';
 import Pagination from '~/components/Pagination';
 import courseService from '~/services/courseService';
 import Image from '~/components/Image';
+import formatPrice from '~/utils/formatPrice';
+import moment from 'moment';
 
 const cx = classnames.bind(styles);
 
@@ -165,9 +167,9 @@ function Course() {
                                                                 alt={item.title}
                                                             />
                                                         </td>
-                                                        <td>{item.price}</td>
+                                                        <td>{formatPrice(item.price)}</td>
                                                         <td>{item?.category?.title}</td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                         <td>
                                                             <Button
                                                                 variant="warning"

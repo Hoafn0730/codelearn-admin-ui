@@ -7,6 +7,7 @@ const routes = {
     register: '/registers',
     invoice: '/invoices',
     setting: '/settings',
+    receipt: '/receipt/:id',
     login: '/login',
 };
 

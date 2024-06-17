@@ -24,6 +24,8 @@ function CreateAndUpdate({ dataRaw, isShow, onSave, onClose }: CreateAndUpdatePr
         id: dataRaw?.id ?? 0,
         courseId: dataRaw?.courseId ?? 0,
         userId: dataRaw?.userId ?? 0,
+        total: 0,
+        status: dataRaw?.status ?? '',
     });
 
     useEffect(() => {
@@ -31,11 +33,19 @@ function CreateAndUpdate({ dataRaw, isShow, onSave, onClose }: CreateAndUpdatePr
             id: dataRaw?.id ?? 0,
             courseId: dataRaw?.courseId ?? 0,
             userId: dataRaw?.userId ?? 0,
+            status: dataRaw?.status ?? '',
         });
     }, [dataRaw]);
 
     const handleChange = (e: SyntheticEvent) => {
         const target = e.target as HTMLInputElement;
+
+        if (target.name === 'courseId') {
+            setData((prev) => ({
+                ...prev,
+                total: courses.find((c) => c?.id === +target.value)?.price ?? 0,
+            }));
+        }
 
         setData((prev) => ({ ...prev, [target.name as string]: target.value }));
     };
@@ -107,6 +117,16 @@ function CreateAndUpdate({ dataRaw, isShow, onSave, onClose }: CreateAndUpdatePr
                                     {user.username}
                                 </option>
                             ))}
+                        </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Status:</Form.Label>
+                        <Form.Select value={data.status} name="status" size="lg" onChange={handleChange}>
+                            <option disabled value={''}>
+                                -- Choose status --
+                            </option>
+                            <option value={'pending'}>Pending</option>
+                            <option value={'success'}>Success</option>
                         </Form.Select>
                     </Form.Group>
                 </Form>

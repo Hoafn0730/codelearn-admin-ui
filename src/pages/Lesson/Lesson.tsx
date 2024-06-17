@@ -13,6 +13,7 @@ import Image from '~/components/Image';
 import lessonService from '~/services/lessonService';
 import courseService from '~/services/courseService';
 import Quiz from './Quiz';
+import moment from 'moment';
 
 const cx = classnames.bind(styles);
 
@@ -45,17 +46,25 @@ function Lesson() {
     const [course, setCourse] = useState(searchParams.get('course') || '');
 
     useEffect(() => {
-        if (Number(searchParams.get('page')) > 0 && searchParams.has('course') && !(show || isShowDelete)) {
+        if (Number(searchParams.get('page')) > 0 && options.length > 0 && !(show || isShowDelete)) {
+            if (!searchParams.has('course')) {
+                setCourse(options[0]);
+                setSearchParams((params) => {
+                    params.set('course', options[0].id + '');
+                    return params;
+                });
+            }
+
             lessonService
                 .getLessons({
                     page: Number(searchParams.get('page')),
-                    courseId: Number(searchParams.get('course')),
+                    courseId: Number(searchParams.get('course')) || +options[0]?.id,
                 })
                 .then((res) => {
                     setData(res.data);
                 });
         }
-    }, [searchParams, show, isShowDelete]);
+    }, [searchParams, options, show, isShowDelete]);
 
     useEffect(() => {
         courseService.getCourses({}).then((res) => {
@@ -86,6 +95,7 @@ function Lesson() {
     };
 
     const handleSave = (data: any, type: string) => {
+        console.log('🚀 ~ handleSave ~ data:', data);
         if (type === 'create') {
             lessonService
                 .createLesson(data)
@@ -193,7 +203,7 @@ function Lesson() {
                                                                 alt={item.title}
                                                             />
                                                         </td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{moment(item?.createdAt).format('MM-DD-YYYY')}</td>
                                                         <td>
                                                             <Button
                                                                 variant="warning"
@@ -209,13 +219,13 @@ function Lesson() {
                                                             >
                                                                 Xoa
                                                             </Button>
-                                                            <Button
+                                                            {/* <Button
                                                                 variant="info"
                                                                 className="text-light mx-1"
                                                                 onClick={() => handleShowQuiz(item.id)}
                                                             >
                                                                 Show Quiz
-                                                            </Button>
+                                                            </Button> */}
                                                         </td>
                                                     </tr>
                                                 ))}
